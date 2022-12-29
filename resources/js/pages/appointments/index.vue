@@ -19,6 +19,32 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:10px">#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Registered Date</th>
+                            <th>Role</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>John@example.com</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
       </div>
     </div>
 </template>
