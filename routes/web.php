@@ -18,8 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('admin/dashboard', function(){
-//     return view('dashboard');
-// });
+Route::get('csrf', function(){
+    return csrf_token();
+});
 
 Route::get('{view}', ApplicationController::class)->where('view', '(.*)');
