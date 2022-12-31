@@ -1,5 +1,6 @@
 <script setup>
-    import moment from 'moment';
+    import axios from 'axios';
+import moment from 'moment';
     import { ref } from 'vue';
     import { useToastr } from '../../toastr.js';
 
@@ -7,7 +8,8 @@
 
     defineProps({
         user: Object,
-        index: Number
+        index: Number,
+        roles:Array
     });
 
     const emit = defineEmits(['userDeleted', 'editUser']);
@@ -27,6 +29,14 @@
             emit('userDeleted', userIdBeingDeleted.value);
         });
     }
+
+    const changeRole = (user, role) => {
+        axios.patch(`/api/users/${user.id}/change-role`, {
+            role: role,
+        }).then(() => {
+            toastr.success('Role changes successfully!');
+        })
+    }
 </script>
 <template>
     <tr>
@@ -34,7 +44,11 @@
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
         <td>{{ moment(user.created_at).format('DD-MM-YYYY') }}</td>
-        <td>--</td>
+        <td>
+            <select class="form-control" @change="changeRole(user, $event.target.value)">
+                <option v-for="role in roles" :key="role.id" :value="role.value" :selected="user.roles[0].name===role.name">{{ role.name }}</option>
+            </select>
+        </td>
         <td>
             <a href="#" @click.prevent="$emit('editUser', user)"><i class="fa fa-edit"></i></a>
             <a href="#" @click.prevent="confirmUserDeletion(user)"><i class="fa fa-trash text-danger ml-2"></i></a>
@@ -49,7 +63,6 @@
                     <h5 class="modal-title" id="exampleModalLabel">
                         Delete User
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <h5>Ary you sure you want to delete this user ?</h5>

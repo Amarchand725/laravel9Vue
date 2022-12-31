@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::latest()->get();
-        return $users;
+        $data = [];
+        $data['users'] = User::with('roles')->latest()->get();
+        $data['roles'] = Role::latest()->get();
+
+        return $data;
     }
     public function store()
     {
@@ -45,5 +49,16 @@ class UserController extends Controller
     {
         $user->delete();
         return response()->noContent();
+    }
+    public function changeRole(User $user)
+    {
+        $user->syncRoles([request('role')]);
+        return response()->json(['success', true]);
+    }
+    public function search()
+    {
+        $searchQuery = request('query');
+        $users = User::with('roles')->where('name', 'like', "%{$searchQuery}%")->get();
+        return response()->json($users);
     }
 }
