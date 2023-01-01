@@ -46,7 +46,7 @@ import moment from 'moment';
         <td>{{ moment(user.created_at).format('DD-MM-YYYY') }}</td>
         <td>
             <select class="form-control" @change="changeRole(user, $event.target.value)">
-                <option v-for="role in roles" :key="role.id" :value="role.value" :selected="user.roles[0].name===role.name">{{ role.name }}</option>
+                <option v-for="role in roles" :key="role.id" :value="role.value" :selected="user.role.name===role.name">{{ role.name }}</option>
             </select>
         </td>
         <td>

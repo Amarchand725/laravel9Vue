@@ -24,6 +24,7 @@
     }
 
     const createUserSchema = yup.object({
+        role: yup.string().required(),
         name: yup.string().required(),
         email: yup.string().email().required(),
         password: yup.string().required().min(8),
@@ -54,6 +55,7 @@
     const addUser = () => {
         editing.value = false;
         formValues.value = {
+            role: '',
             name: '',
             email: '',
         };
@@ -193,12 +195,12 @@
                 </div>
                 <Form ref="form" @submit="handleSubmit" :validation-schema="editing ? editUserSchema : createUserSchema" v-slot="{ errors }" :initial-values="formValues">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div v-if="!editing" class="form-group">
                             <label for="role">Role <span class="text-danger">*</span></label>
-                            <select name="role" id="role" class="form-control">
+                            <Field  as="select" name="role" id="role" class="form-control">
                                 <option value="" selected>Select role</option>
-                                <option v-for="role in roles" :key="role.id">{{ role.name }}</option>
-                            </select>
+                                <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                            </Field>
                             <span class="invalid-feedback">{{ errors.role }}</span>
                         </div>
                         <div class="form-group">

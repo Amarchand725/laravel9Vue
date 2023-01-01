@@ -29,7 +29,7 @@
     });
 
     const createRole = (values, { resetForm, setErrors }) =>{
-        // console.log(values);
+        console.log(values);
         axios.post('/api/roles', values)
         .then((response) => {
             roles.value.unshift(response.data);
@@ -189,7 +189,11 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <Field name="description" type="text" class="form-control" id="description" aria-describedby="" placeholder="Enter short description" />
+                            <!-- <Field name="description" type="text" class="form-control" id="description" aria-describedby="" placeholder="Enter short description" /> -->
+                            <Field v-slot="{ field }" name="description" >
+                                <textarea v-bind="field" class="form-control" id="description" aria-describedby="" placeholder="Enter short description" />
+                            </Field>
+                            <span class="invalid-feedback">{{ errors.description }}</span>
                         </div>
                     </div>
                     <div class="modal-footer">

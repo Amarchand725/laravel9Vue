@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index()
     {
         $data = [];
-        $data['users'] = User::with('roles')->latest()->get();
+        $data['users'] = User::latest()->get();
         $data['roles'] = Role::latest()->get();
 
         return $data;
@@ -20,15 +20,20 @@ class UserController extends Controller
     public function store()
     {
         request()->validate([
+            'role' => 'required',
             'name' => 'required',
             'email' => 'required|unique:users,email',
             'password' => 'required|min:8'
         ]);
-        return $user = User::create([
+        $user = User::create([
             'name' => request('name'),
             'email' => request('email'),
             'password' => bcrypt(request('name')),
         ]);
+
+        $user->assignRole([request('role')]);
+
+        return $user;
     }
     public function update(User $user)
     {
